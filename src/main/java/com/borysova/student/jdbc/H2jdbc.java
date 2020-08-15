@@ -25,7 +25,7 @@ public class H2jdbc {
 
             System.out.println("Creating table  in given database....");
             stmt = conn.createStatement();
-            String sqlDrop = "Drop Table Student";
+            String sqlDrop = "Drop Table if exists Student";
             String sql = "CREATE TABLE IF NOT EXISTS Student " +
                     "( id INTEGER not NULL, " +
                     " first_name VARCHAR(255), " +
