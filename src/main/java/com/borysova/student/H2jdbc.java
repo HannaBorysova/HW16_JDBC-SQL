@@ -1,11 +1,11 @@
-package com.borysova.student.jdbc;
+package com.borysova.student;
+
+import com.borysova.service.StudentServise;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static com.borysova.student.service.StudentServise.*;
 
 public class H2jdbc {
     static final String JDBC_DRIVER = "org.h2.Driver";
@@ -36,12 +36,12 @@ public class H2jdbc {
             stmt.execute(sqlDrop);
             stmt.execute(sql);
             System.out.println("Created table in given database....");
-            inserts(stmt);
-            selects(stmt);
-            orderByAge(stmt);
-            countStudents(stmt);
-            groupByName(stmt);
-            deleteByAge(stmt);
+            StudentServise.inserts(stmt);
+            StudentServise.selects(stmt);
+            StudentServise.orderByAge(stmt);
+            StudentServise.countStudents(stmt);
+            StudentServise.groupByName(stmt);
+            StudentServise.deleteByAge(stmt);
 
             stmt.close();
             conn.close();

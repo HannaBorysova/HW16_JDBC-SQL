@@ -1,4 +1,6 @@
-import com.borysova.student.jdbc.H2jdbc;
+package com.borysova;
+
+import com.borysova.student.H2jdbc;
 
 public class Main {
 

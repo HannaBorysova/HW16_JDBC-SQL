@@ -1,4 +1,4 @@
-package com.borysova.student.service;
+package com.borysova.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
