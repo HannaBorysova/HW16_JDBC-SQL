@@ -1,6 +1,8 @@
-package com.borysova.student;
+package com.borysova.jdbc;
 
-import com.borysova.service.StudentServise;
+import com.borysova.student.StudentService;
+import com.borysova.student.StudentServiсeImpl;
+import com.borysova.utils.Constants;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,41 +10,31 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class H2jdbc {
-    static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc.h2:mem:default";
 
-    static final String STUDENT = "sa";
-    static final String PASS = "";
+    StudentService studentService = StudentServiсeImpl.getInstance();
 
-    public static void createDatabase() {
+    public void createDatabase() {
         Connection conn = null;
         Statement stmt = null;
-
         try {
-            Class.forName(JDBC_DRIVER);
+            Class.forName(Constants.JDBC_DRIVER);
             System.out.println("Connecting to database....");
-            conn = DriverManager.getConnection("jdbc:h2:~/test", STUDENT, PASS);
+            conn = DriverManager.getConnection("jdbc:h2:~/test", Constants.STUDENT, Constants.PASS);
 
             System.out.println("Creating table  in given database....");
             stmt = conn.createStatement();
             String sqlDrop = "Drop Table if exists Student";
-            String sql = "CREATE TABLE IF NOT EXISTS Student " +
-                    "( id INTEGER not NULL, " +
-                    " first_name VARCHAR(255), " +
-                    " last_name VARCHAR(255), " +
-                    " age INTEGER, " +
-                    " city VARCHAR(255), " +
-                    " PRIMARY KEY ( id ))";
+            String sql = Constants.STUDENT_COLUMN;
             stmt.execute(sqlDrop);
             stmt.execute(sql);
             System.out.println("Created table in given database....");
-            StudentServise.inserts(stmt);
-            StudentServise.selects(stmt);
-            StudentServise.orderByAge(stmt);
-            StudentServise.countStudents(stmt);
-            StudentServise.groupByName(stmt);
-            StudentServise.deleteByAge(stmt);
 
+            studentService.inserts(stmt);
+            studentService.selects(stmt);
+            studentService.orderByAge(stmt);
+            studentService.countStudents(stmt);
+            studentService.groupByName(stmt);
+            studentService.deleteByAge(stmt, 20, 45);
             stmt.close();
             conn.close();
         } catch (SQLException se) {

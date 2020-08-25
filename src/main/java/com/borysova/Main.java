@@ -1,10 +1,11 @@
 package com.borysova;
 
-import com.borysova.student.H2jdbc;
+import com.borysova.jdbc.H2jdbc;
 
 public class Main {
 
     public static void main(String[] args) {
-        H2jdbc.createDatabase();
+        H2jdbc h2jdbc = new H2jdbc();
+        h2jdbc.createDatabase();
     }
 }
