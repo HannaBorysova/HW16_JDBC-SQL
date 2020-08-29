@@ -22,17 +22,13 @@ public class H2jdbc {
             } else {
                 throw new FileNotFoundException("Property file " + file + " is not found");
             }
-            String jdbc_driver = properties.getProperty("jdbc_driver");
-            String db_url = properties.getProperty("db_driver");
+            String db_url = properties.getProperty("db_url");
             String user = properties.getProperty("user");
             String password = properties.getProperty("pass");
 
-            Class.forName(jdbc_driver);
             System.out.println("Connecting to database....");
             connection = DriverManager.getConnection(db_url, user, password);
 
-        } catch (ClassNotFoundException se2) {
-            se2.printStackTrace();
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
@@ -42,16 +38,6 @@ public class H2jdbc {
                 inputStream.close();
             } catch (IOException se2) {
             }
-            // try {
-            // if (stmt != null) stmt.close();
-            // } catch (SQLException se2) {
-            //  }
-            //try {
-            //  if (conn != null) conn.close();
-            //} catch (SQLException se) {
-            //  se.printStackTrace();
-            //    }
-            //}
             return connection;
         }
     }

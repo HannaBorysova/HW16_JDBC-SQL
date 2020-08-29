@@ -34,7 +34,6 @@ public class StudentServiсeImpl implements StudentService {
         System.out.println("Created table in given database....");
 
         inserts(stmt);
-        selects(stmt);
         orderByAge(stmt);
         countStudents(stmt);
         groupByName(stmt);
@@ -60,7 +59,7 @@ public class StudentServiсeImpl implements StudentService {
     }
 
     @Override
-    public void selects(Statement stmt) throws SQLException {
+    public void selects (Statement stmt) throws SQLException {
         String sql = "SELECT id, first_name, last_name, age, city FROM Student";
         ResultSet rs = stmt.executeQuery(sql);
         while (rs.next()) {
