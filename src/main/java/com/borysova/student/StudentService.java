@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public interface StudentService {
+    void createH2jdbc() throws SQLException;
+
     void inserts(Statement stmt) throws SQLException;
 
     void selects(Statement stmt) throws SQLException;

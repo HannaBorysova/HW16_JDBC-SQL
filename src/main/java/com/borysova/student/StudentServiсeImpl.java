@@ -1,5 +1,9 @@
 package com.borysova.student;
 
+import com.borysova.jdbc.H2jdbc;
+import com.borysova.utils.Constants;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,7 +18,29 @@ public class StudentServiсeImpl implements StudentService {
     }
 
     public static StudentService getInstance() {
-        return studentServiсe;
+      return studentServiсe;
+    }
+
+    Connection conn = H2jdbc.createDatabase();
+    Statement stmt = null;
+
+    @Override
+    public void createH2jdbc() throws SQLException {
+        stmt = conn.createStatement();
+        String sqlDrop = "Drop Table if exists Student";
+        String sql = Constants.STUDENT_COLUMN;
+        stmt.execute(sqlDrop);
+        stmt.execute(sql);
+        System.out.println("Created table in given database....");
+
+        inserts(stmt);
+        selects(stmt);
+        orderByAge(stmt);
+        countStudents(stmt);
+        groupByName(stmt);
+        deleteByAge(stmt, 20, 45);
+        stmt.close();
+        conn.close();
     }
 
     @Override

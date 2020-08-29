@@ -1,56 +1,58 @@
 package com.borysova.jdbc;
 
-import com.borysova.student.StudentService;
-import com.borysova.student.StudentServiсeImpl;
-import com.borysova.utils.Constants;
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Properties;
 
 public class H2jdbc {
+    private static InputStream inputStream;
+    private static Connection connection;
 
-    StudentService studentService = StudentServiсeImpl.getInstance();
-
-    public void createDatabase() {
-        Connection conn = null;
-        Statement stmt = null;
+    public static Connection createDatabase() {
         try {
-            Class.forName(Constants.JDBC_DRIVER);
+            Properties properties = new Properties();
+            String file = "H2jdbc.properties";
+            inputStream = H2jdbc.class.getClassLoader().getResourceAsStream(file);
+            if (inputStream != null) {
+                properties.load(inputStream);
+            } else {
+                throw new FileNotFoundException("Property file " + file + " is not found");
+            }
+            String jdbc_driver = properties.getProperty("jdbc_driver");
+            String db_url = properties.getProperty("db_driver");
+            String user = properties.getProperty("user");
+            String password = properties.getProperty("pass");
+
+            Class.forName(jdbc_driver);
             System.out.println("Connecting to database....");
-            conn = DriverManager.getConnection("jdbc:h2:~/test", Constants.STUDENT, Constants.PASS);
+            connection = DriverManager.getConnection(db_url, user, password);
 
-            System.out.println("Creating table  in given database....");
-            stmt = conn.createStatement();
-            String sqlDrop = "Drop Table if exists Student";
-            String sql = Constants.STUDENT_COLUMN;
-            stmt.execute(sqlDrop);
-            stmt.execute(sql);
-            System.out.println("Created table in given database....");
-
-            studentService.inserts(stmt);
-            studentService.selects(stmt);
-            studentService.orderByAge(stmt);
-            studentService.countStudents(stmt);
-            studentService.groupByName(stmt);
-            studentService.deleteByAge(stmt, 20, 45);
-            stmt.close();
-            conn.close();
+        } catch (ClassNotFoundException se2) {
+            se2.printStackTrace();
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException se2) {
+                inputStream.close();
+            } catch (IOException se2) {
             }
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            // try {
+            // if (stmt != null) stmt.close();
+            // } catch (SQLException se2) {
+            //  }
+            //try {
+            //  if (conn != null) conn.close();
+            //} catch (SQLException se) {
+            //  se.printStackTrace();
+            //    }
+            //}
+            return connection;
         }
     }
 }
