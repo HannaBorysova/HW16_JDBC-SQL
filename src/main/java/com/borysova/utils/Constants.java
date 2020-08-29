@@ -5,5 +5,4 @@ public class Constants {
             + "( id INTEGER not NULL, " + " first_name VARCHAR(255), " + " last_name VARCHAR(255), " +
             " age INTEGER, " + " city VARCHAR(255), " + " PRIMARY KEY ( id ))";
     public static final String INSERT_INTO_STUDENT = "INSERT INTO Student ";
-
 }
